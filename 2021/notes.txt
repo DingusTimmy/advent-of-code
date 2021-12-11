@@ -1,0 +1,5 @@
+Notes, future optimisations, to-dos:
+- 01-sonar-sweep part 2, only have to compare the input exiting and
+  entering the sliding window.
+- TODO: learn bazel build environment + vscode debug test configuration.
+- TODO: write unit tests for programs when test config is setup.
