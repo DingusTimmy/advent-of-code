@@ -3,3 +3,4 @@ Notes, future optimisations, to-dos:
   entering the sliding window.
 - TODO: learn bazel build environment + vscode debug test configuration.
 - TODO: write unit tests for programs when test config is setup.
+- 04-giant-squid refactor to not iterate over unneccessary bingo calls.
