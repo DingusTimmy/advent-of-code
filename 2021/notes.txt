@@ -4,3 +4,12 @@ Notes, future optimisations, to-dos:
 - TODO: learn bazel build environment + vscode debug test configuration.
 - TODO: write unit tests for programs when test config is setup.
 - 04-giant-squid refactor to not iterate over unneccessary bingo calls.
+- Revise the method of tracking which boards have bingos, built to work not be efficient
+
+
+	// keep map of coordinates map ["x,y"] = 0
+	// when the map at key increase to 2, add to a count
+	hitMap := make(map[string]int)
+	lineIntersections := 0
+
+	// scan file

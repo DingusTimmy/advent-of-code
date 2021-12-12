@@ -59,25 +59,27 @@ func main() {
 	// call numbers in order, check for bingos
 	winningNumber := 0
 	winningBoard := 0
-	bingo := false
+	// lastBingo[boardNumber] = 1 until bingo, then it is set to 1
+	// check each bingo if sum of last bingo == 0, continue if greater than 0
+	lastBingo := make([]int, numberOfBoards)
+	for i := range lastBingo {
+		lastBingo[i] = 1
+	}
+	finalBingo := false
+
 	for _, num := range numbers {
-		if bingo {
+		if finalBingo {
 			break
 		}
 		intNum, _ := strconv.Atoi(num)
 		for _, coords := range boardMap[num] {
-			fmt.Printf("Num: %v, Coords: %v\n", num, coords)
 			b := coords / 100
 			x := digitAtPlace(coords, 2) - 1
 			y := digitAtPlace(coords, 1) - 1
-			fmt.Printf("1 ~ B:%v, X :%v, Y:%v\n", b, x, y)
 
 			// mark a hit on the board
 			boards[b].hits[x][y] = 1
 			boards[b].sum -= intNum
-
-			fmt.Printf("1 ~ Board: %v, Remaining sum: %v\n", b, boards[b].sum)
-			fmt.Printf("1 ~ Board: %v, hits: %v\n", b, boards[b].hits)
 
 			// check for bingo
 			xbingo := 0
@@ -85,22 +87,32 @@ func main() {
 			for i := 0; i < 5; i++ {
 				xbingo += boards[b].hits[i][y]
 				ybingo += boards[b].hits[x][i]
-				fmt.Printf("x: %v, y: %v\n", boards[b].hits[x][i], boards[b].hits[i][y])
 			}
-			fmt.Printf("1 ~ x: %v, XBingo: %v, y: %v, YBingo: %v\n", x, xbingo, y, ybingo)
 			if xbingo == 5 || ybingo == 5 {
 				winningNumber = intNum
 				winningBoard = b
-				bingo = true
-				break
+				fmt.Printf("BINGO! Drawn #: %v, Board #: %v\n", winningNumber, winningBoard)
+				lastBingo[b] = 0
+				fmt.Println(lastBingo)
+				sumOfLastBingo := 0 // when == 1 final
+				index := 0
+				for index < numberOfBoards && sumOfLastBingo == 0 {
+					sumOfLastBingo += lastBingo[index]
+					index++
+				}
+				fmt.Printf("Sum: %v\n", sumOfLastBingo)
+				if sumOfLastBingo == 0 {
+					finalBingo = true
+					break
+				}
 			}
 		}
 	}
 
 	// results
-	fmt.Printf("1 ~ Winning Number: %v\n", winningNumber)
-	fmt.Printf("1 ~ Board: %v, remaining sum: %v\n", winningBoard, boards[winningBoard].sum)
-	fmt.Printf("1 ~ Result: %v\n", winningNumber*boards[winningBoard].sum)
+	fmt.Printf("2 ~ Winning Number: %v\n", winningNumber)
+	fmt.Printf("2 ~ Board: %v, remaining sum: %v\n", winningBoard, boards[winningBoard].sum)
+	fmt.Printf("2 ~ Result: %v\n", winningNumber*boards[winningBoard].sum)
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
